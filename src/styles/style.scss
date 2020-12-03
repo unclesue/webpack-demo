@@ -1,0 +1,14 @@
+$body-color: red;
+
+@font-face {
+  font-family: "MyFont";
+  src: url('@/assets/DINCOND-MEDIUM.OTF') format('otf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+body {
+  font-family: "MyFont";
+  color: $body-color;
+  // background: url("@/assets/1.jpg");
+}
