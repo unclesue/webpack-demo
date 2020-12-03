@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack serve",
-    "compile": "babel src -d dist --extensions '.ts'"
+    "compile": "babel src -d dist --extensions '.ts','.js'"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
