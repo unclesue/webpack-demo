@@ -6,9 +6,6 @@ const resolve = (dir) => path.resolve(__dirname, dir)
 module.exports = {
   name: 'webpack demo',
   mode: 'development',
-  entry: {
-    app: './src/app',
-  },
   devtool: 'inline-source-map',
   devServer: {
     publicPath: '/',
@@ -29,6 +26,13 @@ module.exports = {
       '@': resolve('src'),
     },
   },
+  entry: {
+    app: './src/app',
+  },
+  output: {
+    filename: '[name].[hash:8].js',
+    path: resolve('dist'),
+  },
   module: {
     rules: [
       {
@@ -42,17 +46,21 @@ module.exports = {
       {
         test: /\.(m?js|tsx?)$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader?cacheDirectory',
-        },
+        use: { loader: 'babel-loader?cacheDirectory' },
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
+        // generator: {
+        //   filename: 'static/img/[name].[hash:8].[ext]'
+        // }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
+        // generator: {
+        //   filename: 'static/fonts/[name].[hash:8].[ext]'
+        // }
       },
     ],
   },
@@ -63,8 +71,25 @@ module.exports = {
       favicon: './public/favicon.ico'
     }),
   ],
-  output: {
-    filename: '[name].[hash:8].js',
-    path: resolve('dist'),
-  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 30000, // 模块的最小体积
+      cacheGroups: {
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10, // 优先级
+          chunks: 'initial'
+        },
+        commons: {
+          name: 'chunk-commons',
+          test: resolve('src/components'),
+          minChunks: 3, // 被引用次数
+          priority: 5,
+          reuseExistingChunk: true
+        },
+      }
+    }
+  }
 }
