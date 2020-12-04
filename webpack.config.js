@@ -30,7 +30,7 @@ module.exports = {
     app: './src/app',
   },
   output: {
-    filename: '[name].[hash:8].js',
+    filename: 'js/[name].[hash:8].js',
     path: resolve('dist'),
   },
   module: {
@@ -51,16 +51,16 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-        // generator: {
-        //   filename: 'static/img/[name].[hash:8].[ext]'
-        // }
+        generator: {
+          filename: 'img/[name].[hash:8].[ext]'
+        }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
-        // generator: {
-        //   filename: 'static/fonts/[name].[hash:8].[ext]'
-        // }
+        generator: {
+          filename: 'fonts/[name].[hash:8].[ext]'
+        }
       },
     ],
   },
