@@ -49,18 +49,14 @@ module.exports = {
         use: { loader: 'babel-loader?cacheDirectory' },
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'img/[name].[hash:8].[ext]'
-        }
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: { name: 'img/[name].[hash:8].[ext]' },
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'fonts/[name].[hash:8].[ext]'
-        }
+        test: /\.(woff2?|eot|ttf|otf|svg)$/i,
+        loader: 'url-loader',
+        options: { name: 'fonts/[name].[hash:8].[ext]' }
       },
     ],
   },
