@@ -1,6 +1,7 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const resolve = (dir) => path.resolve(__dirname, dir)
 
 module.exports = {
@@ -36,12 +37,27 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.(css|sass|scss)$/i,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: '../' },
+          },
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true, importLoaders: 2 },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              postcssOptions: {
+                plugins: ['autoprefixer'],
+              },
+            },
+          },
+          { loader: 'sass-loader', options: { sourceMap: true }},
+        ],
       },
       {
         test: /\.(m?js|tsx?)$/,
@@ -50,22 +66,27 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        loader: 'file-loader',
-        options: { name: 'img/[name].[hash:8].[ext]' },
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+          fallback: 'file-loader',
+          name: 'img/[name].[hash:8].[ext]',
+        },
       },
       {
         test: /\.(woff2?|eot|ttf|otf|svg)$/i,
-        loader: 'url-loader',
-        options: { name: 'fonts/[name].[hash:8].[ext]' }
+        loader: 'file-loader',
+        options: { name: 'fonts/[name].[hash:8].[ext]' },
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-    new HtmlWebpackPlugin({ 
+    new HtmlWebpackPlugin({
       template: './public/index.html',
-      favicon: './public/favicon.ico'
+      favicon: './public/favicon.ico',
     }),
+    new MiniCssExtractPlugin({ filename: 'css/[name].[hash:8].css' }),
   ],
   optimization: {
     splitChunks: {
@@ -76,16 +97,16 @@ module.exports = {
           name: 'chunk-libs',
           test: /[\\/]node_modules[\\/]/,
           priority: 10, // 优先级
-          chunks: 'initial'
+          chunks: 'initial',
         },
         commons: {
           name: 'chunk-commons',
           test: resolve('src/components'),
           minChunks: 3, // 被引用次数
           priority: 5,
-          reuseExistingChunk: true
+          reuseExistingChunk: true,
         },
-      }
-    }
-  }
+      },
+    },
+  },
 }
