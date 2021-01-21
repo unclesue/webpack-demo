@@ -31,7 +31,7 @@ module.exports = {
     app: './src/app',
   },
   output: {
-    filename: 'js/[name].[hash:8].js',
+    filename: 'js/[name].[contenthash:8].js',
     path: resolve('dist'),
   },
   module: {
@@ -70,13 +70,13 @@ module.exports = {
         options: {
           limit: 8192,
           fallback: 'file-loader',
-          name: 'img/[name].[hash:8].[ext]',
+          name: 'img/[name].[contenthash:8].[ext]',
         },
       },
       {
         test: /\.(woff2?|eot|ttf|otf|svg)$/i,
         loader: 'file-loader',
-        options: { name: 'fonts/[name].[hash:8].[ext]' },
+        options: { name: 'fonts/[name].[contenthash:8].[ext]' },
       },
     ],
   },
@@ -86,7 +86,7 @@ module.exports = {
       template: './public/index.html',
       favicon: './public/favicon.ico',
     }),
-    new MiniCssExtractPlugin({ filename: 'css/[name].[hash:8].css' }),
+    new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash:8].css' }),
   ],
   optimization: {
     splitChunks: {

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class EventEmitter {
+        constructor() {
+          this.subs = Object.create(null);
+        }
+        $on(eventType, handle) {
+          this.subs[eventType] = this.subs[eventType] || [];
+          this.subs[eventType].push(handle);
+        }
+        $emit(eventType) {
+          if (this.subs[eventType]) {
+            this.subs[eventType].forEach((handle) => {
+              handle();
+            });
+          }
+        }
+      }
+      let em = new EventEmitter();
+      em.$on("click", () => {
+        console.log("click1");
+      });
+      em.$on("click", () => {
+        console.log("click2");
+      });
+      em.$emit("click");
+    </script>
+  </body>
+</html>
