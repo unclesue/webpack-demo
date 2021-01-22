@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve",
+    "serve": "webpack serve",
     "compile": "babel src -d dist --extensions '.ts','.js'"
   },
   "devDependencies": {
