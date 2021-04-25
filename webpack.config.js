@@ -27,9 +27,10 @@ module.exports = {
       '@': resolve('src'),
     },
   },
-  entry: {
-    app: './src/app',
-  },
+  // entry: {
+  //   app: './src/app',
+  // },
+  entry: ['@babel/polyfill', './src/app'],
   output: {
     filename: 'js/[name].[hash].js',
     path: resolve('dist'),
@@ -61,7 +62,8 @@ module.exports = {
       },
       {
         test: /\.(m?js|tsx?)$/,
-        exclude: /(node_modules|bower_components)/,
+        // exclude: /(node_modules|bower_components)/,
+        include: [resolve('src'), resolve('node_modules/@antv/g6')],
         use: { loader: 'babel-loader?cacheDirectory' },
       },
       {
